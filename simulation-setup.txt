@@ -1,8 +1,8 @@
 Simulations
 
-All tables and graphics in the main manuscript were based on the script
+All graphics in the main manuscript were based on the script
 sims.R. The code contains hard-coded values for the true parameters that
-changed accordingly: the SMD effect size (delta), A and B (obtained from
+changed accordingly: true proportions in control and treatment groups, A and B (obtained from
 Hartung, 1999, to run the simulations based on the Hartung method),
 and the number of studies (kValue).
 
@@ -21,10 +21,11 @@ are based on the HC2 and HC3 variance estimators.
 The values below were used to obtain the results reported in the main
 manuscript.
 
-delta = 0, 0.5, 1
+(true proportion in control, true proportion in treatment) = (0.1,0.1), (0.3,0.4), (0.5,0.5) and (0.06,0.08) 
 A = 0.95
 B = 1.05
 kValue = 2, 4, 6, 8, 10
+I^2 = (0, 1/3, 1/2)
 
 Equal size
 k = 2; n1 = n2 = 1000 (Total nr. of obs = 2000)
