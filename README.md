@@ -1,4 +1,4 @@
-# Robust-variance-estimation-in-small-meta-analysis-with-the-standardized-mean-difference
+# A Modified Random-effects Method for Small Meta-analysis with Effect Sizes Based on Binary Outcomes
 
 Supplemental Content
 
