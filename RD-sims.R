@@ -2,11 +2,11 @@
 library(tidyverse)
 library(readxl)
 
-source("df_HC2.r")
-source("df_HC3.r")
+source("df_HC2.R")
+source("df_HC3.R")
 
 # Read in excel file containing n values
-n_values <- read_excel("~/Desktop/n_values.xlsx", col_names = FALSE)
+n_values <- read_excel("n_values.xlsx", col_names = FALSE)
 
 pi_c <- c(0.06, 0.1, 0.5, 0.3) # True rate in control group
 pi_t <- c(0.08, 0.1, 0.5, 0.4) # True rate in treatment group
@@ -123,6 +123,15 @@ tau_sq_fun <- function(pi_t, pi_c) {
   total <- (pi_t*(1-pi_t)+pi_c*(1-pi_c))
   return(as.numeric(total))
 } # True heterogeneity between studies, i.e., variance of effect size
+
+average_nValues <- function(colNum, kVal) {
+  total <- 0
+  for(i in 1:kVal) {
+    total <- total + (n_values[i, colNum])
+  }
+  average <- total/kVal
+  return(as.numeric(average))
+} # Average sample size of k studies
 
 average_sigmaValues <- function(sigmas, kVal) {
   total <- 0
@@ -272,11 +281,11 @@ main <- function(){
   kVal <- 2 # Number of studies
   totalNumCol <- length(n_values[1,])
 
-  mainResults <- matrix(NA, nrow=3*totalNumCol*4, ncol=32)
+  mainResults <- matrix(NA, nrow=3*totalNumCol*4, ncol=33)
   currentRow <- 1
   for(i in 1:4){ # i is the index for true rate vector (i.e., 4)
     for(j in 1:totalNumCol) {
-      phi <- c(0.000001, 1/2, 1)
+      phi <- c(0.000001, 1/(1+2*average_nValues(j, kVal)), 1/(1+average_nValues(j, kVal)))
       for(k in 1:length(phi)){
         alpha_t <- pi_t[i]*((1/phi[k])-1) 
         beta_t <- (1-pi_t[i])*((1/phi[k])-1)
@@ -428,6 +437,7 @@ main <- function(){
                                       is_in_CI_DL, is_in_CI_HK, is_in_CI_Hartung,
                                       is_in_CI_hc1, is_in_CI_hc2, is_in_CI_hc3,
                                       is_in_CI_hc2_newDOF_est, is_in_CI_hc3_newDOF_est,
+                                      is_in_CI_hc3_empirical,
                                       DL_CI_length, HK_CI_length, Hartung_CI_length,
                                       hc1_CI_length, hc2_CI_length, hc3_CI_length,
                                       hc2_newDOF_est_CI_length, hc3_newDOF_est_CI_length)
@@ -445,20 +455,5 @@ for (l in 1:10000){
   df_sims <- rbind(df_sims, currentResults)
 }
 
-#saveRDS(df_sims, "RD/oneLarge_k10_RD.rds")
 
-
-# test <- df_sims %>%
-#   filter(V7 %in% 0.3) %>%
-#   filter(V8 %in% 0.4) %>%
-#   mutate(i_sq = rep(c(0, 1/3, 1/2), 10000)) %>%
-#   group_by(V1, V3, i_sq) %>%
-#   mutate(cov_prob_DL = sum(V17)/10000,
-#          cov_prob_HK = sum(V18)/10000,
-#          cov_prob_HARTUNG = sum(V19)/10000,
-#          cov_prob_hc1 = sum(V20)/10000,
-#          cov_prob_hc2 = sum(V21)/10000,
-#          cov_prob_hc3 = sum(V22)/10000,
-#          cov_prob_hc2_newDOF = sum(V23)/10000,
-#          cov_prob_hc3_newDOF = sum(V24)/10000)
 
