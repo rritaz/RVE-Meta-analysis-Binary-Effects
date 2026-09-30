@@ -2,11 +2,11 @@
 library(tidyverse)
 library(readxl)
 
-source("df_HC2.r")
-source("df_HC3.r")
+source("df_HC2.R")
+source("df_HC3.R")
 
 # Read in excel file containing n values
-n_values <- read_excel("~/Desktop/n_values.xlsx", col_names = FALSE)
+n_values <- read_excel("n_values.xlsx", col_names = FALSE)
 
 pi_c <- c(0.06, 0.1, 0.5, 0.3) # True rate in control group
 pi_t <- c(0.08, 0.1, 0.5, 0.4) # True rate in treatment group
